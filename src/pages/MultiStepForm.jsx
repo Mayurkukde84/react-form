@@ -1,10 +1,14 @@
-import PersonalDetails from "../components/multistepForms/PersonalDetails"
+// import PersonalDetails from "../components/multistepForms/PersonalDetails"
+
+import Education from "../components/multistepForms/Education"
+
 
 
 const MultiStepForm = () => {
   return (
     <>
-     <PersonalDetails/>
+     {/* <PersonalDetails/> */}
+     <Education/>
     </>
   )
 }
