@@ -1,10 +1,10 @@
 
-import MultiStepForm from './pages/MultiStepForm'
+import Certification from "./components/multistepForms/Certification"
 
 const App = () => {
   return (
     <>
-    <MultiStepForm/>
+    <Certification/>
       
     </>
   )

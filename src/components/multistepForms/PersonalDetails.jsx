@@ -29,9 +29,9 @@ const PersonalDetails = () => {
   const [country, setCountry] = React.useState(221);
 
   const { name, flags, countryCallingCode } = countries[country];
-  
+
   const dateResult = date ? format(date, "MM-dd-yy") : null;
-  
+
   return (
     <>
       <p className="text-xl w-auto bg-gray-400 p-2 ">Personal Details</p>
@@ -232,8 +232,11 @@ const PersonalDetails = () => {
           </select>
 
           <select className="mt-1 p-2 border  border-gray-400 text-gray-700 rounded-md w-full overflow-x-auto">
+          
             {experienceDurations.map((experienceDuration, index) => {
-              return <option key={index}>{experienceDuration}</option>;
+              return(
+                <option key={index}>{experienceDuration}</option>
+              )
             })}
           </select>
           <select className="mt-1 p-2 border  border-gray-400 text-gray-700 rounded-md w-full overflow-x-auto">
