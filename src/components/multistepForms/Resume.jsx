@@ -14,7 +14,7 @@ const Resume = () => {
           <Textarea />
         </div>
         <div className="flex justify-center">
-        <Button className="bg-indigo-600">Save & Next </Button>
+       
       </div>
       </form>
     </>

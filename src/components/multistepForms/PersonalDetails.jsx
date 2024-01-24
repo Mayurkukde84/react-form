@@ -22,20 +22,32 @@ import { industries } from "../../data/Industry.js";
 import { noticePeriodDays } from "../../data/Notice.js";
 import { experienceDurations } from "../../data/Experiance.js";
 import { annualSalaryRanges } from "../../data/AnnualSalary.js";
-const PersonalDetails = () => {
-  const [date, setDate] = React.useState();
+// eslint-disable-next-line react/prop-types
+const PersonalDetails = ({ formPersonalDetails, setFormPersonalDetails }) => {
+  const [birthDate, setBirthDate] = React.useState();
 
   const { countries } = useCountries();
   const [country, setCountry] = React.useState(221);
 
   const { name, flags, countryCallingCode } = countries[country];
+  console.log(name);
+  const dateResult = birthDate ? format(birthDate, "MM-dd-yy") : null;
+  console.log(dateResult);
 
-  const dateResult = date ? format(date, "MM-dd-yy") : null;
+  const personalDetailsOnChange = (e) => {
+    const { name, value } = e.target;
+    setFormPersonalDetails((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
 
+  console.log(formPersonalDetails);
+  console.log(setFormPersonalDetails);
   return (
     <>
       <p className="text-xl w-auto bg-gray-400 p-2 ">Personal Details</p>
-      <div className="grid grid-cols-3 md:grid-cols-6 items-center gap-12 p-5 ">
+      <div className="grid grid-cols-3 md:grid-cols-6 items-center gap-12 p-5 mt-5 ">
         <div className="md:space-y-12 space-y-4 col-span-1 ">
           <p>Profile Picture</p>
           <p>Name</p>
@@ -46,11 +58,22 @@ const PersonalDetails = () => {
         </div>
         <div className="md:space-y-8 space-y-4 col-span-2 ">
           <input type="file" accept="image/*" />
-          <Input label="Name" />
-          <select className="mt-1 p-2 border  border-gray-400 text-gray-700 rounded-md w-full">
+          <Input
+            type="text"
+            label="Name"
+            name="name"
+            onChange={personalDetailsOnChange}
+            // eslint-disable-next-line react/prop-types
+            value={formPersonalDetails.name}
+          />
+          <select
+            className="mt-1 p-2 border  border-gray-400 text-gray-700 rounded-md w-full"
+            onChange={personalDetailsOnChange}
+            name="gender"
+          >
             <option>Gender</option>
-            <option>Male</option>
-            <option>Female</option>
+            <option value={"male"}>Male</option>
+            <option value={"female"}>Female</option>
           </select>
 
           <Popover placement="bottom">
@@ -58,14 +81,14 @@ const PersonalDetails = () => {
               <Input
                 label="Select a Date"
                 onChange={() => null}
-                value={date ? format(date, "PPP") : ""}
+                value={birthDate ? format(birthDate, "PPP") : ""}
               />
             </PopoverHandler>
             <PopoverContent>
               <DayPicker
                 mode="single"
-                selected={date}
-                onSelect={setDate}
+                selected={birthDate}
+                onSelect={setBirthDate}
                 showOutsideDays
                 className="border-0"
                 classNames={{
@@ -104,7 +127,11 @@ const PersonalDetails = () => {
             </PopoverContent>
           </Popover>
 
-          <select className="mt-1 p-2 border  border-gray-400 text-gray-700 rounded-md w-full overflow-y-auto ">
+          <select
+            onChange={personalDetailsOnChange}
+            name="currentLocation"
+            className="mt-1 p-2 border  border-gray-400 text-gray-700 rounded-md w-full overflow-y-auto "
+          >
             <option>Select Current Location</option>
             <optgroup label="---Top Metropolitan Cities---">
               <option>Ahmedabad</option>
@@ -129,7 +156,11 @@ const PersonalDetails = () => {
               );
             })}
           </select>
-          <select className="mt-1 p-2 border  border-gray-400 text-gray-700 rounded-md w-full overflow-y-auto ">
+          <select
+            onChange={personalDetailsOnChange}
+            name="preferredLocation"
+            className="mt-1 p-2 border  border-gray-400 text-gray-700 rounded-md w-full overflow-y-auto "
+          >
             <option>Select Preferred Location</option>
             <optgroup label="---Top Metropolitan Cities---">
               <option>Ahmedabad</option>
@@ -155,16 +186,16 @@ const PersonalDetails = () => {
             })}
           </select>
         </div>
-        <div className="md:space-y-10 space-y-4 col-span-1 mt-5">
+        <div className="md:space-y-12 space-y-4 col-span-1 ">
           <p>Phone</p>
           <p>Industry</p>
-          <p>Functional Area</p>
+
           <p>Notice Peroid</p>
           <p>Experiance</p>
           <p>Annual Salary</p>
           <p>Expected Salary</p>
         </div>
-        <div className="md:space-y-6 space-y-4 col-span-2 mt-5 ">
+        <div className="md:space-y-8 space-y-4 col-span-2  ">
           <div className="relative flex w-full max-w-[24rem]">
             <Menu placement="bottom-start">
               <MenuHandler>
@@ -205,6 +236,9 @@ const PersonalDetails = () => {
             </Menu>
             <Input
               type="tel"
+              onChange={personalDetailsOnChange}
+              name="phone"
+              value={personalDetailsOnChange.phone}
               placeholder="Mobile Number"
               className="rounded-l-none !border-t-blue-gray-200 focus:!border-t-gray-900"
               labelProps={{
@@ -213,46 +247,67 @@ const PersonalDetails = () => {
               containerProps={{
                 className: "min-w-0",
               }}
+              min={10}
+              max={10}
             />
           </div>
-          <select className="mt-1 p-2 border  border-gray-400 text-gray-700 rounded-md w-full overflow-y-auto">
+          <select
+            onChange={personalDetailsOnChange}
+            value={personalDetailsOnChange.industry}
+            name="industry"
+            className="mt-1 p-2 border  border-gray-400 text-gray-700 rounded-md w-full overflow-y-auto"
+          >
             {industries.map((industrie, index) => {
               return <option key={index}>{industrie}</option>;
             })}
           </select>
-          <select className="mt-1 p-2 border  border-gray-400 text-gray-700 rounded-md w-full overflow-y-auto">
+          {/* <select className="mt-1 p-2 border  border-gray-400 text-gray-700 rounded-md w-full overflow-y-auto">
             <option>Male</option>
             <option>Female</option>
-          </select>
+          </select> */}
 
-          <select className="mt-1 p-2 border  border-gray-400 text-gray-700 rounded-md w-full overflow-y-auto">
+          <select
+            name="noticePeriod"
+            onChange={personalDetailsOnChange}
+            value={personalDetailsOnChange.noticePeriodDays}
+            className="mt-1 p-2 border  border-gray-400 text-gray-700 rounded-md w-full overflow-y-auto"
+          >
             {noticePeriodDays.map((notice, index) => {
               return <option key={index}>{notice}</option>;
             })}
           </select>
 
-          <select className="mt-1 p-2 border  border-gray-400 text-gray-700 rounded-md w-full overflow-x-auto">
-          
+          <select
+            onChange={personalDetailsOnChange}
+            name="experiance"
+            value={personalDetailsOnChange.experience}
+            className="mt-1 p-2 border  border-gray-400 text-gray-700 rounded-md w-full overflow-x-auto"
+          >
             {experienceDurations.map((experienceDuration, index) => {
-              return(
-                <option key={index}>{experienceDuration}</option>
-              )
+              return <option key={index}>{experienceDuration}</option>;
             })}
           </select>
-          <select className="mt-1 p-2 border  border-gray-400 text-gray-700 rounded-md w-full overflow-x-auto">
+          <select
+            onChange={personalDetailsOnChange}
+            name="annualSalary"
+            value={personalDetailsOnChange.annualSalaryRanges}
+            className="mt-1 p-2 border  border-gray-400 text-gray-700 rounded-md w-full overflow-x-auto"
+          >
             {annualSalaryRanges.map((experienceDuration, index) => {
               return <option key={index}>{experienceDuration}</option>;
             })}
           </select>
-          <select className="mt-1 p-2 border  border-gray-400 text-gray-700 rounded-md w-full overflow-x-auto">
+          <select
+            onChange={personalDetailsOnChange}
+            name="expectedSalary"
+            value={personalDetailsOnChange.expectedSalary}
+            className="mt-1 p-2 border  border-gray-400 text-gray-700 rounded-md w-full overflow-x-auto"
+          >
             {annualSalaryRanges.map((experienceDuration, index) => {
               return <option key={index}>{experienceDuration}</option>;
             })}
           </select>
         </div>
-      </div>
-      <div className="flex justify-center">
-        <Button className="bg-indigo-600">Save & Next </Button>
       </div>
     </>
   );
